@@ -212,7 +212,7 @@ img.emoji {
 
 <h2>Centralized Multi-Robot SLAM without Encounters - Full-Batch mode</h2>
 In this framework, we assume that a central computing node is available for collaboratively estimating the trajectory and the map. The overall workflow in this pipeline is as follows.
-<ul>
+<ul align="left">
 <li> Gather all robot data (stereo image pairs) onto the central computing node.</li>
 <li> Detect loop closures within the factor graph. Add the corresponding constraints only to that robot's factor graph where loop closures are detected.</li>
 <li> Perform visual loop closure detection across factor graphs and impose constraints involving the corresponding poses, this time across the factor graphs of multiple robots.</li>
@@ -224,7 +224,7 @@ Here, we do not attempt to exploit any additional information obtained from robo
 
 <h2>Centralized Multi-Robot SLAM without Encounters - Semi-Batch mode</h2>
 In this framework also, we assume that a central computing node is available for collaboratively estimating the trajectory and the map. The overall workflow in this pipeline is as follows.
-<ul>
+<ul align="left">
 <li> Perform pose-graph optimization on each robot individually. Detect loop closures within the factor graph. Add the corresponding constraints only to that robot's factor graph where loop closures are detected. Optimize the robot's pose graph using these loop closure constraints.</li>
 <li> Perform visual loop closure detection across factor graphs and impose constraints involving the corresponding poses, this time across the factor graphs of multiple robots.</li>
 <li> Optimize the resulting multi-robot factor graph for joint trajectory estimates.</li>
@@ -235,14 +235,18 @@ Here, the amount of computation performed to obtain the resultant trajectory is 
 
 <h2>Centralized Multi-Robot SLAM without Encounters - Incremental mode</h2>
 
-This framework, although similar to spirit to framework 2, has the major difference that pose graph optimization is carried out in an incremental fashion, to facilitate real-time operation. We specifically use the Smoothing and Mapping (SAM) framework due to the quick nature of its updates and availability of stable open-source implementations (GTSAM).
+This setting is similar to the previous, but has the major difference that pose graph optimization is carried out in an incremental fashion, to facilitate real-time operation. We specifically use the Smoothing and Mapping (SAM) framework due to the quick nature of its updates and availability of stable open-source implementations (GTSAM).
  
 
 <h2>Distributed Multi-Robot SLAM with Encounters</h2>
-During an encounter, in this setting, apart from transmitting the visual loop descriptors, each robot transmits its entire pose graph to the other robot, to facilitate distributed optimization of the pose graph.
+<p>
+During an encounter, apart from transmitting the visual loop descriptors, each robot transmits its entire pose graph to the other robot, to facilitate distributed optimization of the pose graph.
 We assume that robots encounter each other during exploration of the environment. When an encounter happens, we also assume that one robot makes a relative measurement of the other robot's pose at that instant. This measurement can be made by placing special markers on the robot so that a robot can be detected when it is in another robot's sensing range, or just by a simple exchange of robot's (local frame) coordinates when both robots are in each others' communication range.
+</p>
+<p>
 The method used for implementing the encounter has an implication on the topology of the resulting combined factor graph. If robot's can detect each other only visually (when they are in sensing range), it could frequently happen that only one robot sees the other robot. The other robot does not see the first robot if its camera is oriented in some other direction. Hence, this would lead to unidirectional edges at the set of poses where an encounter occurs. However, if a wireless communication based method is used, where robots exchange their (local frame) coordinates when in communicating distance, this results in a bidirectional edge between their poses at that instant.
-<ul>
+</p>
+<ul align="left">
 Typical workflow is as follows.
 
 <li> Perform graph-based SLAM on robots individually, visually detecting loops within the factor graph.</li>
