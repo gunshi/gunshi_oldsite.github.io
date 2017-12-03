@@ -232,7 +232,29 @@ In this framework also, we assume that a central computing node is available for
 </ul>
 Here, the amount of computation performed to obtain the resultant trajectory is lesser than that for the full-batch case, since the pose graphs are already individually optimized. Inter-robot loop closures do not have a huge impact on individual pose graphs --- they only align multiple pose graphs with respect to each other, while maintaining the rigidity of each pose graph. This framework can be used for multi-session mapping as well.
 
+
+<h2>Centralized Multi-Robot SLAM without Encounters - Incremental mode</h2>
+
+This framework, although similar to spirit to framework 2, has the major difference that pose graph optimization is carried out in an incremental fashion, to facilitate real-time operation. We specifically use the Smoothing and Mapping (SAM) framework due to the quick nature of its updates and availability of stable open-source implementations (GTSAM).
  
+
+Distributed Multi-Robot SLAM with Encounters
+We now move to the more interesting case of multi robot SLAM with encounters. During an encounter, in this setting, apart from transmitting the visual loop descriptors, each robot transmits its entire pose graph to the other robot, to facilitate distributed optimization of the pose graph.
+In this framework, we assume that robots encounter each other during exploration of the environment. When an encounter happens, we also assume that one robot makes a relative measurement of the other robot's pose at that instant. This measurement can be made by placing special markers on the robot so that a robot can be detected when it is in another robot's sensing range, or just by a simple exchange of robot's (local frame) coordinates when both robots are in each others' communication range.
+The method used for implementing the encounter has an implication on the topology of the resulting combined factor graph. If robot's can detect each other only visually (when they are in sensing range), it could frequently happen that only one robot sees the other robot. The other robot does not see the first robot if its camera is oriented in some other direction. Hence, this would lead to unidirectional edges at the set of poses where an encounter occurs. However, if a wireless communication based method is used, where robots exchange their (local frame) coordinates when in communicating distance, this results in a bidirectional edge between their poses at that instant.
+<ul>
+Typical workflow is as follows.
+
+<li> Perform graph-based SLAM on robots individually, visually detecting loops within the factor graph.</li>
+<li> When an encounter happens, measure the other robot's pose relative to the robot's current pose.</li>
+<li> Also, transmit the pose graph and loop closure descriptors to the other robot.</li>
+<li> Construct a joint factor graph, using the other robot's pose graph and by detecting loops across pose graphs.</li>
+<li> On each robot, optimize the resulting combined factor graph to obtain the trajectory estimate.</li>
+<li> Register the map using the optimized poses.</li>
+</ul>
+Note that, for a complete trajectory and map estimate, apart from encounters during exploration, a distributed optimization setting necessitates that the robots indulge in a rendezvous upon completion of exploration, to facilitate information exchange.
+
+
 <img src="figures/U-11.png" alt="some_text" width="400" height="400">
 
 
@@ -262,14 +284,15 @@ Here, the amount of computation performed to obtain the resultant trajectory is 
 
 
 <ul class="center-justified">
-Reading Resources
+Recommended Reading Resources:
 <li><a href="https://www.ri.cmu.edu/pub_files/2006/12/Dellaert06ijrr.pdf"> Square Root SAM</a></li>
-<li><a href="https://www.ri.cmu.edu/pub_files/2012/2/Kaess12ijrr.pdf"> Isam2</a></li>
-<li><a href="https://www.cc.gatech.edu/~kaess/pub/Kaess08tro.pdf"> Isam</a></li>
 <li><a href="http://www.roboticsproceedings.org/rss01/p24.pdf">  Square root SAM</a></li>
+<li><a href="https://www.cc.gatech.edu/~kaess/pub/Kaess08tro.pdf"> Isam</a></li>
+<li><a href="https://www.ri.cmu.edu/pub_files/2012/2/Kaess12ijrr.pdf"> Isam2</a></li>
+
 </ul>
 <ul class="center-justified">
-Library Links
+Library Links:
 <li><a href="https://github.com/RainerKuemmerle/g2o"> g2o </a></li>
 <li><a href="http://www.cvlibs.net/software/libviso/"> Libviso2 </a></li>
 <li><a href="https://research.cc.gatech.edu/borg/download"> GTSAM </a></li>
