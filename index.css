@@ -3,3 +3,25 @@
     color: black;
     font-size: 25px;
 }
+
+.top_margin {
+	margin-top:5%;
+}
+
+.video_margin{
+	margin-left:18%;
+}
+
+.content{
+	width:80%;
+}
+
+.large_width{
+	width:130%;
+}
+
+.center-justified {
+    text-align: justify;
+    -moz-text-align-last: center;
+    text-align-last: center;
+}
