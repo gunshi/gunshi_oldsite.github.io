@@ -1,12 +1,22 @@
 intro
+-grad research assistant
+-wish to apply under prof
+-work on which problems
 
 cair
+-husky
+-front back end
+-all theory i know by now
+-distributed encounters multi threading
 
 intersection
-
+publication
+-problem statement
+-approach
+-my own extensions, adversarial
+-have read deep reinf also
 
 applying for a masters also
 cv attached
-
 
 
